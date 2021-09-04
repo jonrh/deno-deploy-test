@@ -1,16 +1,18 @@
 function handleRequest(request) {
-  if (pathname.startsWith("/text") {
+  const { pathname } = new URL(request.url);
+
+  if (pathname.startsWith("/text")) {
     return new Response("Hæ! 👏", {
       headers: { "content-type": "text/plain; charset=UTF-8" }
     });
   }
 
-  if (pathname.startsWitdh("/html")) {
+  if (pathname.startsWith("/html")) {
     return new Response(
       `<p>Basic html, may not work</p>`,
       {
 	headers: {
-	  "content-type"
+	  "content-type": "text/html; charset=UTF-8",
 	}
       }
     );
@@ -53,4 +55,4 @@ function handleRequest(request) {
 
 addEventListener("fetch", event => {
   event.respondWith(handleRequest(event.request));
-};
+});
