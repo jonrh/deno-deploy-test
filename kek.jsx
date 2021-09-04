@@ -1,3 +1,25 @@
+import { h } from "https://x.lcas.dev/preact@10.5.12/mod.js";
+import { renderToString } from "https://x.lcas.dev/preact@10.5.12/ssr.js";
+
+function Index() {
+  return (
+    <html>
+      <head>
+	<title>Deno Deploy testing</title>
+      </head>
+      <body>
+	<h1>Index</h1>
+	<p>Routes:</p>
+	<ul>
+	  <li><a href="/text">/text</a></li>
+	  <li><a href="/html">/html</a></li>
+	  <li><a href="/json">/json</a></li>
+	</ul>
+      </body>
+    </html>
+  );
+}
+
 function handleRequest(request) {
   const { pathname } = new URL(request.url);
 
@@ -9,7 +31,7 @@ function handleRequest(request) {
 
   if (pathname.startsWith("/html")) {
     return new Response(
-      `<p>Basic html, may not work</p>`,
+      `<p>Basic html</p>`,
       {
 	headers: {
 	  "content-type": "text/html; charset=UTF-8",
@@ -30,27 +52,11 @@ function handleRequest(request) {
     });
   }
 
-  return new Response(
-    `<html>
-    <head>
-      <title>Deno Deploy testing</title>
-    </head>
-    <body>
-      <h1>Index</h1>
-      <p>Routes:</p>
-      <ul>
-	<li><a href="/text">/text</a></li>
-	<li><a href="/html">/html</a></li>
-	<li><a href="/json">/json</a></li>
-      </ul>
-    </body>
-    </html>`,
-    {
-      headers: {
-	"content-type": "text/html; charset=UTF-8",
-      }
-    }
-  );
+  return new Response(renderToString(<Index />), {
+    headers: {
+      "content-type": "text/html; charset=UTF-8",
+    } 
+  });
 }
 
 addEventListener("fetch", event => {
